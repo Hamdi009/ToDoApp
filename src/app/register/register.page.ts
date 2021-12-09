@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AlertController } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -7,9 +11,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterPage implements OnInit {
 
-  constructor() { }
+  email = '';
+  password = '';
+  confirmpass = '';
+  constructor(public afAuth: AngularFireAuth,
+    public afstore: AngularFirestore,
+    public alertController: AlertController,
+    public router: Router) { }
 
   ngOnInit() {
   }
+  login(){
+    this.router.navigateByUrl('login');
+  }
+  async presentAlert(title: string, content: string) {
+		const alert = await this.alertController.create({
+			header: title,
+			message: content,
+			buttons: ['OK']
+		});
 
+		await alert.present();
+	}
+  async register() {
+    const { email, password, confirmpass } = this;
+    if (password !== confirmpass) {
+      this.presentAlert('Password Error !', 'Passwords don\'t match ! ');
+      return console.error('Passwords don\'t match');
+    }
+
+    try {
+      const res = await this.afAuth.createUserWithEmailAndPassword(email, password);
+      console.log(res);
+      console.log(res);
+      this.email = '';
+      this.password = '';
+      this.confirmpass = '';
+      this.presentAlert('Success', 'You are registered!');
+
+
+    } catch (err) {
+      console.dir(err);
+    }
+
+  }
 }
