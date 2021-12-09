@@ -17,7 +17,7 @@ export class HomePage {
   ) {
     const date = new Date();
     const opt = {weekday: 'long', month: '2-digit', day: '2-digit'} as  const;
-    this.currentDate = date.toLocaleDateString('fr-FR',opt);
+    this.currentDate = date.toLocaleDateString('en-En',opt);
     this.getTasks();
   }
 

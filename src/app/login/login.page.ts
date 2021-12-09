@@ -12,7 +12,7 @@ export class LoginPage implements OnInit {
 
   email='';
   password='';
-  constructor(public afAuth: AngularFireAuth,
+  constructor(public angularFB: AngularFireAuth,
     public router: Router) { }
 
   ngOnInit() {
@@ -23,7 +23,7 @@ export class LoginPage implements OnInit {
  async login(){
     const {email,password}=this;
     try{
-        const res=await this.afAuth.signInWithEmailAndPassword(email ,password);
+        const res=await this.angularFB.signInWithEmailAndPassword(email ,password);
         console.log(res);
         this.email = '';
       this.password = '';
@@ -33,6 +33,6 @@ export class LoginPage implements OnInit {
         console.log('user  not found');
       }
     }
-
+    this.router.navigateByUrl('home');
   }
 }
